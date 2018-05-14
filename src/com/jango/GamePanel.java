@@ -3,6 +3,7 @@ package com.jango;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.*;
 import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -23,6 +24,9 @@ public class GamePanel extends JPanel implements Runnable {
 
   private int FPS = 30;
   private int targetTime = 1000/FPS;
+
+  private TileMap tileMap;
+  private FileReader rf;
 
   public GamePanel() {
     super();
@@ -66,11 +70,12 @@ public class GamePanel extends JPanel implements Runnable {
     running = true;
     assetloader ();
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    g = (Graphics2D) image.getGraphics(); 
+    g = (Graphics2D) image.getGraphics();
+    tileMap = new TileMap("assets/map.txt", 32);
   }
 
   private void assetloader() {
-    
+
     try {
       background = ImageIO.read(this.getClass().getResource("assets/background.png"));
       run_1 = ImageIO.read(this.getClass().getResource("assets/Lauf1.png"));
@@ -78,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
       jump = ImageIO.read(this.getClass().getResource("assets/Sprung.png"));
       stand_1 = ImageIO.read(this.getClass().getResource("assets/Stand1.png"));
       stand_2 = ImageIO.read(this.getClass().getResource("assets/Stand2.png"));
-      
+
     } catch(Exception e) {
       // Check for Errors
       System.out.println(e);
@@ -86,15 +91,16 @@ public class GamePanel extends JPanel implements Runnable {
   }
 
   private void update() {
+    tileMap.update();
   }
 
   private void draw() {
     Graphics g2 = getGraphics();
-    g2.drawImage(background, 0, 0, 200, 200, null);
+    g2.drawImage(image, 0, 0, WIDTH, HEIGHT, null);
     g2.dispose();
   }
 
   private void render() {
-
+    tileMap.draw(g);
   }
 }

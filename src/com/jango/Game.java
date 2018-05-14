@@ -7,7 +7,7 @@ public class Game {
     JFrame window = new JFrame("Jango and the Janitors");
     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     window.setContentPane(new GamePanel());
-    window.setSize(1440, 1080);
+    window.setSize(640, 480);
     window.pack();
     window.setVisible(true);
   }
