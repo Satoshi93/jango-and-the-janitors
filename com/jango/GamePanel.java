@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
     g = (Graphics2D) image.getGraphics();
 
     try {
-      background = ImageIO.read(this.getClass().getResource("background.png"));
+      background = ImageIO.read(this.getClass().getResource("assets/background.png"));
       System.out.println("background");
     } catch(Exception e) {
       // Check for Errors
@@ -77,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void draw() {
     Graphics g2 = getGraphics();
-    g2.drawImage(background, 0, 0, null);
+    g2.drawImage(background, 0, 0, 200, 200, null);
     g2.dispose();
   }
 
