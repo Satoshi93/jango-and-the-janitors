@@ -15,3 +15,6 @@
 - Füge einen neuen Branch hinzu mit: `git checkout b 'mein-neuer-branch'`
 - Wechsel in einen Branch mit `git checkout mein-neuer-branch`
 - Wechsel zum vorherigen Branch mit `git checkout - `
+
+
+## Linting
