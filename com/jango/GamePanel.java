@@ -3,6 +3,7 @@ package com.jango;
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel implements Runnable {
   private static final int WIDTH = 800;
@@ -12,6 +13,7 @@ public class GamePanel extends JPanel implements Runnable {
   private boolean running;
 
   private BufferedImage image;
+  private BufferedImage background;
   private Graphics2D g;
 
   private int FPS = 30;
@@ -59,14 +61,24 @@ public class GamePanel extends JPanel implements Runnable {
     running = true;
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     g = (Graphics2D) image.getGraphics();
+
+    try {
+      background = ImageIO.read(this.getClass().getResource("background.png"));
+      System.out.println("background");
+    } catch(Exception e) {
+      // Check for Errors
+      System.out.println(e);
+    }
+
   }
 
   private void update() {
-
   }
 
   private void draw() {
-
+    Graphics g2 = getGraphics();
+    g2.drawImage(background, 0, 0, null);
+    g2.dispose();
   }
 
   private void render() {
