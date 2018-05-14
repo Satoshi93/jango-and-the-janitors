@@ -14,6 +14,11 @@ public class GamePanel extends JPanel implements Runnable {
 
   private BufferedImage image;
   private BufferedImage background;
+  private BufferedImage run_1;
+  private BufferedImage run_2;
+  private BufferedImage jump;
+  private BufferedImage stand_1;
+  private BufferedImage stand_2;
   private Graphics2D g;
 
   private int FPS = 30;
@@ -59,17 +64,25 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void init() {
     running = true;
+    assetloader ();
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-    g = (Graphics2D) image.getGraphics();
+    g = (Graphics2D) image.getGraphics(); 
+  }
 
+  private void assetloader() {
+    
     try {
       background = ImageIO.read(this.getClass().getResource("assets/background.png"));
-      System.out.println("background");
+      run_1 = ImageIO.read(this.getClass().getResource("assets/Lauf1.png"));
+      run_2 = ImageIO.read(this.getClass().getResource("assets/Lauf2.png"));
+      jump = ImageIO.read(this.getClass().getResource("assets/Sprung.png"));
+      stand_1 = ImageIO.read(this.getClass().getResource("assets/Stand1.png"));
+      stand_2 = ImageIO.read(this.getClass().getResource("assets/Stand2.png"));
+      
     } catch(Exception e) {
       // Check for Errors
       System.out.println(e);
     }
-
   }
 
   private void update() {
