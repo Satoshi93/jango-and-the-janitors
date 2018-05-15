@@ -40,7 +40,18 @@ public class TileMap {
       System.out.println(e);
     }
   }
-
+  public int getx() {
+    return x;
+  }
+  public int gety() {
+    return y;
+  }
+  public void setx(int i) {
+    x = i;
+  }
+  public void sety(int i) {
+    y = i;
+  }
   public void update() {
 
   }

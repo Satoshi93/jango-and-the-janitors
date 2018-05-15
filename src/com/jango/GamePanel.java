@@ -28,6 +28,8 @@ public class GamePanel extends JPanel implements Runnable {
   private TileMap tileMap;
   private FileReader rf;
 
+  private Player player;
+
   public GamePanel() {
     super();
     setPreferredSize(new Dimension(WIDTH, HEIGHT));
@@ -72,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     g = (Graphics2D) image.getGraphics();
     tileMap = new TileMap("assets/map.txt", 32);
+    player = new Player(tileMap);
   }
 
   private void assetloader() {
@@ -92,6 +95,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void update() {
     tileMap.update();
+    player.update();
   }
 
   private void draw() {
@@ -102,5 +106,6 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void render() {
     tileMap.draw(g);
+    player.draw(g);
   }
 }
