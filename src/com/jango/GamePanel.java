@@ -1,14 +1,19 @@
 package com.jango;
 
 import javax.swing.JPanel;
+
+import com.jango.GameStateManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
+import java.awt.event.*;
 
-public class GamePanel extends JPanel implements Runnable {
-  private static final int WIDTH = 800;
-  private static final int HEIGHT = 400;
+public class GamePanel extends JPanel implements Runnable, KeyListener {
+  public static final int WIDTH = 320;
+  public static final int HEIGHT = 240;
+  public static final int SCALE = 3;
 
   private Thread thread;
   private boolean running;
@@ -22,8 +27,11 @@ public class GamePanel extends JPanel implements Runnable {
   private BufferedImage stand_2;
   private Graphics2D g;
 
-  private int FPS = 30;
-  private int targetTime = 1000/FPS;
+
+	private int FPS = 60;
+	private long targetTime = 1000 / FPS;
+
+  private GameStateManager gsm;
 
   private TileMap tileMap;
   private FileReader rf;
@@ -32,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
 
   public GamePanel() {
     super();
-    setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
     setFocusable(true);
     requestFocus();
   }
@@ -41,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
     super.addNotify();
     if (thread == null) {
       thread = new Thread(this);
+      addKeyListener(this);
       thread.start();
     }
   }
@@ -54,9 +63,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     while (running) {
       startTime = System.nanoTime();
-      update();
-      render();
-      draw();
+			update();
+			draw();
+			drawToScreen();
       urdTime = (System.nanoTime() - startTime / 1000000);
       waitTime = targetTime - urdTime;
 
@@ -70,42 +79,33 @@ public class GamePanel extends JPanel implements Runnable {
 
   private void init() {
     running = true;
-    assetloader ();
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     g = (Graphics2D) image.getGraphics();
-    tileMap = new TileMap("assets/map.txt", 32);
-    player = new Player(tileMap);
-  }
 
-  private void assetloader() {
-
-    try {
-      background = ImageIO.read(this.getClass().getResource("assets/background.png"));
-      run_1 = ImageIO.read(this.getClass().getResource("assets/Lauf1.png"));
-      run_2 = ImageIO.read(this.getClass().getResource("assets/Lauf2.png"));
-      jump = ImageIO.read(this.getClass().getResource("assets/Sprung.png"));
-      stand_1 = ImageIO.read(this.getClass().getResource("assets/Stand1.png"));
-      stand_2 = ImageIO.read(this.getClass().getResource("assets/Stand2.png"));
-
-    } catch(Exception e) {
-      // Check for Errors
-      System.out.println(e);
-    }
+    gsm = new GameStateManager();
   }
 
   private void update() {
-    tileMap.update();
-    player.update();
+    gsm.update();
   }
 
   private void draw() {
-    Graphics g2 = getGraphics();
-    g2.drawImage(image, 0, 0, WIDTH, HEIGHT, null);
-    g2.dispose();
+    gsm.draw(g);
   }
 
-  private void render() {
-    tileMap.draw(g);
-    player.draw(g);
+  private void drawToScreen() {
+		Graphics g2 = getGraphics();
+		g2.drawImage(image, 0, 0,
+				WIDTH * SCALE, HEIGHT * SCALE,
+				null);
+		g2.dispose();
   }
+
+	public void keyTyped(KeyEvent key) {}
+	public void keyPressed(KeyEvent key) {
+		gsm.keyPressed(key.getKeyCode());
+	}
+	public void keyReleased(KeyEvent key) {
+		gsm.keyReleased(key.getKeyCode());
+	}
 }
